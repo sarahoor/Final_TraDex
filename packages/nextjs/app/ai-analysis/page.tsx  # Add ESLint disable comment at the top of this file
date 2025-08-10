@@ -1,0 +1,11 @@
+// eslint-disable-next-line react/no-unescaped-entities
+const AiAnalysisPage = () => {
+    return (
+        <div>
+            <h1>Welcome to the AI Analysis Page</h1>
+            <p>Here’s an example of unescaped entities: ‘Hello’ and ‘World’.</p>
+        </div>
+    );
+};
+
+export default AiAnalysisPage;

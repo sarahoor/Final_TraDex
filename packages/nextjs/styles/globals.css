@@ -1,0 +1,216 @@
+/* --- Core imports --- */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* --- DaisyUI themes --- */
+@plugin "daisyui" {
+  themes: light, dark --prefersdark;
+}
+
+/* Light theme — crisp, roomy */
+@plugin "daisyui/theme" {
+  name: "light";
+  --color-primary: #6366f1;        /* indigo-500 */
+  --color-primary-content: #ffffff;
+  --color-secondary: #f4f4f5;      /* zinc-100 */
+  --color-secondary-content: #0f172a;
+  --color-accent: #ec4899;         /* pink-500 */
+  --color-accent-content: #ffffff;
+  --color-neutral: #111827;        /* gray-900 for strong text on light */
+  --color-neutral-content: #f9fafb;
+
+  --color-base-100: #ffffff;
+  --color-base-200: #f8fafc;       /* slate-50 */
+  --color-base-300: #e5e7eb;       /* gray-200 */
+  --color-base-content: #0f172a;   /* slate-900 */
+
+  --color-info: #0ea5e9;
+  --color-success: #22c55e;
+  --color-warning: #eab308;
+  --color-error: #ef4444;
+
+  /* Extras */
+  --radius: 1rem;                  /* rounded-2xl */
+  --shadow-soft: 0 8px 30px rgba(2, 6, 23, 0.06);
+  --shadow-strong: 0 20px 40px rgba(2, 6, 23, 0.12);
+}
+
+/* Dark theme — contrasty, soft edges */
+@plugin "daisyui/theme" {
+  name: "dark";
+  --color-primary: #8b5cf6;        /* violet-500 */
+  --color-primary-content: #ffffff;
+  --color-secondary: #0b1220;      /* deep slate */
+  --color-secondary-content: #e2e8f0;
+  --color-accent: #f472b6;         /* pink-400 */
+  --color-accent-content: #0b1220;
+
+  --color-neutral: #e2e8f0;
+  --color-neutral-content: #0b1220;
+
+  --color-base-100: #0b1220;       /* darker bg than slate-900 */
+  --color-base-200: #111827;       /* gray-900 */
+  --color-base-300: #1f2937;       /* gray-800 */
+  --color-base-content: #e5e7eb;
+
+  --color-info: #38bdf8;
+  --color-success: #4ade80;
+  --color-warning: #facc15;
+  --color-error: #f87171;
+
+  --radius: 1rem;
+  --shadow-soft: 0 8px 30px rgba(2, 6, 23, 0.35);
+  --shadow-strong: 0 20px 40px rgba(2, 6, 23, 0.55);
+}
+
+/* ---------------- Base layer ---------------- */
+@layer base {
+  :root {
+    color-scheme: light dark;
+    --ease-smooth: cubic-bezier(.22,.61,.36,1);
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-base-100 text-base-content antialiased;
+    font-feature-settings: "ss01" 1, "cv01" 1;
+  }
+
+  /* Typography rhythm */
+  h1, h2, h3, h4 {
+    @apply font-semibold tracking-tight;
+    line-height: 1.15;
+    margin-bottom: .35rem;
+  }
+  h1 { @apply text-3xl md:text-4xl; }
+  h2 { @apply text-2xl md:text-3xl; }
+  h3 { @apply text-xl md:text-2xl; }
+  h4 { @apply text-lg; }
+
+  p { margin: .65rem 0; }
+
+  /* Links */
+  a.link {
+    @apply underline decoration-2 underline-offset-4 transition-opacity;
+  }
+  a.link:hover { opacity: .8; }
+
+  /* Selection + scrollbars */
+  ::selection { background: color-mix(in oklab, var(--color-primary) 25%, transparent); color: var(--color-primary-content); }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--color-base-content) 20%, transparent) transparent;
+  }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--color-base-content) 20%, transparent);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+}
+
+/* --------------- Components layer --------------- */
+@layer components {
+  /* Container helper */
+  .page {
+    @apply max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
+  }
+
+  /* Card */
+  .card {
+    @apply bg-base-100 border border-base-300/60 rounded-[var(--radius)] shadow-[var(--shadow-soft)] transition-transform duration-200;
+  }
+  .card:hover { transform: translateY(-1px); }
+  .card-body { @apply p-4 md:p-6; }
+  .card-title { @apply text-lg md:text-xl font-semibold mb-1; }
+  .card-subtitle { @apply text-sm opacity-70; }
+
+  /* Table */
+  .table {
+    @apply w-full text-sm;
+  }
+  .table thead tr { @apply bg-base-200/60 text-xs uppercase tracking-wide; }
+  .table th, .table td { @apply px-3 py-2; }
+  .table tbody tr { @apply border-t border-base-300/60; }
+  .table tbody tr:hover { @apply bg-base-200/40; }
+
+  /* Inputs */
+  .input {
+    @apply bg-base-100 border border-base-300/70 rounded-xl px-3 py-2 text-sm outline-none transition-all;
+    box-shadow: 0 0 0 0 rgba(99,102,241,.35);
+  }
+  .input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-primary) 20%, transparent);
+  }
+
+  .select {
+    @apply bg-base-100 border border-base-300/70 rounded-xl px-3 py-2 text-sm outline-none transition-all;
+  }
+  .select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-primary) 20%, transparent);
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-all;
+    box-shadow: var(--shadow-soft);
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary {
+    @apply bg-primary text-primary-content;
+  }
+  .btn-primary:hover { filter: brightness(1.05); }
+  .btn-outline {
+    @apply bg-transparent border border-base-300 text-base-content;
+  }
+  .btn-ghost {
+    @apply bg-transparent text-base-content shadow-none;
+  }
+  .btn-danger {
+    @apply bg-error text-error-content;
+  }
+
+  /* Chips / badges */
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-full border border-base-300/70 px-3 py-1 text-xs;
+    background: color-mix(in oklab, var(--color-base-200) 60%, transparent);
+  }
+
+  /* Section header */
+  .section {
+    @apply flex items-center justify-between gap-3 mb-2;
+  }
+  .section-title {
+    @apply text-lg md:text-xl font-semibold;
+  }
+
+  /* Subtle glass (for dark) */
+  .glass {
+    background: color-mix(in oklab, var(--color-base-200) 30%, transparent);
+    backdrop-filter: saturate(140%) blur(8px);
+    @apply border border-base-300/50 rounded-[var(--radius)];
+  }
+
+  /* Hover row */
+  .row-hover {
+    @apply transition-colors cursor-pointer;
+  }
+  .row-hover:hover {
+    @apply bg-base-200/60;
+  }
+}
+
+/* --------------- Utilities layer --------------- */
+@layer utilities {
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+  .shadow-strong { box-shadow: var(--shadow-strong); }
+  .ring-primary-4 { box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-primary) 22%, transparent); }
+  .grid-auto-fit { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+}
